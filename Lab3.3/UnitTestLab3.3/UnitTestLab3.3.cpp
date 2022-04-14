@@ -17,9 +17,9 @@ namespace UnitTestLab33
 			n[0].lastName = "a";
 			n[0].firstName = "a";
 			n[0].phone ="3896078";
-			n[0].date.day = 12;
-			n[0].date.month = 7;
-			n[0].date.year=2008;
+			n[0].date[0] = 12;
+			n[0].date[1] = 7;
+			n[0].date[2]=2008;
 
 			Assert::IsTrue(PrintNote(n, N, "3896078") == 1);
 		}

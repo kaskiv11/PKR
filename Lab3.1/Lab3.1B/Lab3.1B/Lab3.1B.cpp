@@ -1,4 +1,4 @@
-﻿// Lab3.1.cpp
+﻿// Lab3.1B.cpp
 
 #include <iostream>
 #include <iomanip>

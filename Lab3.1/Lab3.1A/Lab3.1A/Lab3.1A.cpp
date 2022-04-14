@@ -86,8 +86,6 @@ void Print(Student* s, const int N)
 	cout << endl;
 }
 
-
-
 int searchForPhysics(Student *s, const int N)
 {
 	int k = 0;
@@ -181,7 +179,7 @@ int main()
 	Create(s, N);
 	Print(s, N);
 	LineSearchPhysics(s, N);
-	cout << "Кількість  студентів які отимали з фізики та математики 4 або 5: " << searchForPhysics(s, N) << endl;
+	
 	cout << "Кількість  студентів які отимали з фізики та математики 4 або 5: " << searchForPhysics(s, N) << endl;
 	cout << "Кількість  студентів які отимали з фізики 5: " << LineSearchPhysics5(s, N) << endl;
 	cout << "Кількість  студентів які отимали з фізики 4: " << LineSearchPhysics4(s, N) << endl;

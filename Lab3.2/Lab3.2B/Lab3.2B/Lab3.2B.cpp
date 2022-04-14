@@ -111,22 +111,21 @@ void Print(Student* student, const int N) {
 	cout << endl;
 }
 
-
-int BinSearch(Student* s, const int N, const string lastName, const unsigned course, const int physics)
+int BinSearch(Student* s, const int N, const string lastName, const int course, const int physics)
 { // повертає індекс знайденого елемента або -1, якщо шуканий елемент відсутній 
 	int L = 0, R = N - 1, m;
 	do {
 		m = (L + R) / 2;
-		if (s[m].lastName == lastName && s[m].сourse == course && s[m].physics == physics)
+		if (s[m].physics == physics && s[m].сourse == course && s[m].lastName == lastName)
 			return m;
-		if ((s[m].сourse < int(course))
+		if ((s[m].physics < (int)physics)
 			||
-			(s[m].сourse == course &&
-				s[m].lastName < lastName)
+			(s[m].physics == physics &&
+				s[m].сourse < course)
 			||
-			(s[m].сourse == course &&
-				s[m].lastName == lastName &&
-				s[m].physics < physics))
+			(s[m].physics == physics &&
+				s[m].сourse == course &&
+				s[m].lastName > lastName))
 		{
 			L = m + 1;
 		}
@@ -137,6 +136,7 @@ int BinSearch(Student* s, const int N, const string lastName, const unsigned cou
 	} while (L <= R);
 	return -1;
 }
+
 
 int* IndexSort(Student* s, const int N) {
 	int* I = new int[N]; // створили індексний масив
@@ -203,18 +203,19 @@ void PrintIndexSorted(Student* s, int* I, const int N) {
 	cout << endl;
 }
 
+
 void Sort(Student* s, const int N) {
 	Student tmp;
 	for (int i0 = 0; i0 < N - 1; i0++) // метод "бульбашки"
 		for (int i1 = 0; i1 < N - i0 - 1; i1++)
-			if ((s[i1].сourse > s[i1 + 1].сourse)
+			if ((s[i1].physics > s[i1 + 1].physics)
 				||
-				(s[i1].сourse == s[i1 + 1].сourse &&
-					s[i1].lastName > s[i1 + 1].lastName)
+				(s[i1].physics == s[i1 + 1].physics &&
+					s[i1].сourse > s[i1 + 1].сourse)
 				||
-				(s[i1].сourse == s[i1 + 1].сourse &&
-					s[i1].lastName == s[i1 + 1].lastName &&
-					s[i1].physics > s[i1 + 1].physics))
+				(s[i1].physics == s[i1 + 1].physics &&
+					s[i1].сourse == s[i1 + 1].сourse &&
+					s[i1].lastName < s[i1 + 1].lastName))
 			{
 				tmp = s[i1];
 				s[i1] = s[i1 + 1];
@@ -234,8 +235,7 @@ int main()
 	string lastName;
 	int isphysics, found, course, physics;
 
-	//LineSearchPhysics(s, N);
-	//cout << "Кількість  студентів які отимали з фізики та математики 4 або 5: " << searchForPhysics(s, N);
+
 
 
 	int menuItem;

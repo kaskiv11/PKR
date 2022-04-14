@@ -1,5 +1,4 @@
-﻿// Lab3.3.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+﻿// Lab3.3.cpp : 
 
 #include <iostream>
 #include <fstream>
@@ -8,19 +7,19 @@
 #include <Windows.h> 
 using namespace std;
 
-struct DateOfBirth
+/* struct DateOfBirth
 {
 	int day;
 	int month;
 	int year;
-};
-
+};*/
 struct Note
 {
 	string firstName;
 	string lastName;
 	string phone;
-	DateOfBirth date;
+	int date[3];
+
 };
 void Create(Note* n, const int N);
 void Print(Note* n, const int N);
@@ -28,7 +27,7 @@ void SaveToFile(Note* n, const int N, const char* filename);
 void LoadFromFile(Note*& n, int& N, const char* filename);
 void Sort(Note* n, const int N);
 int PrintNote(Note* n, const int N, const string phone);
-//void Data(Note n);
+bool DateValidate(int day, int  month, int year);
 
 
 int main()
@@ -40,10 +39,9 @@ int main()
 	cout << "Введіть к-сть Note: "; cin >> N;
 	Note* n = new Note[N];
 
-	Create(n, N);
-	Sort(n, N);
-	Print(n, N);
 
+
+	
 	char filename[100];
 	string phone;
 
@@ -104,27 +102,37 @@ int main()
 }
 
 
+
 void Create(Note * n, const int N)
 {
+	int day, month, year;
 	for (int i = 0; i < N; i++) {
 		cout << "Note № " << i + 1 << ":" << endl;
 		cout << "Ім'я: "; cin >> n[i].firstName;
 		cout << "Прізвище: "; cin >> n[i].lastName;
 		cout << "Номер телефону: "; cin >> n[i].phone;
-		cout << "День: "; cin >> n[i].date.day;
-		cout << "Місяць: "; cin >> n[i].date.month;
-		cout << "Рік: "; cin >> n[i].date.year;
-		cout << endl;
+		
+		do {
+			cout << "День: "; cin >> day;
+			cout << "Місяць: ";
+			cin >> month;
+			cout << "Рік: "; cin >> year;
+			cout << endl;
+		} while (!DateValidate(day, month, year));
+
+			n[i].date[0]=day;
+			n[i].date[1]=month;
+			n[i].date[2] = year;
 	}
 }
 
 void Print(Note * n, const int N)
 {
-	cout << "=============================================================================="
+	cout << "======================================================================="
 		<< endl;
-	cout << "|  №  |   Імя     |   Прізвище   | Номер телефону |  День |  Місяць |   Рік   |"
+	cout << "|  №  |   Імя     |   Прізвище   | Номер телефону |  Дата народження  |"
 		<< endl;
-	cout << "=============================================================================="
+	cout << "======================================================================="
 		<< endl;
 
 	for (int i = 0; i < N; i++)
@@ -133,11 +141,9 @@ void Print(Note * n, const int N)
 			<< " | " << setw(9) << left << n[i].firstName
 			<< " | " << setw(12) << left << n[i].lastName
 			<< " | " << setw(14) << left << n[i].phone
-			<< " | " << setw(5) << left << n[i].date.day
-			<< " | " << setw(7) << left << n[i].date.month
-			<< " | " << setw(7) << right << setprecision(2) << n[i].date.year << " |";
+			<< " | " << setw(5) << right << n[i].date[0] << ":" << n[i].date[1] << ":" << n[i].date[2] << setw(6) << " |";
 		cout << endl;
-        cout << "------------------------------------------------------------------------------";
+        cout << "---------------------------------------------------------------------";
 		cout << endl;
 	}
 }
@@ -147,12 +153,23 @@ void Sort(Note * n, const int N)
 	Note tmp;
 	for (int i = 0; i < N - 1; i++)
 		for (int j = 0; j < N - i - 1; j++)
-			if (n[j].date.day > n[j + 1].date.day) {
+			if ((n[i].date[2] > n[i + 1].date[2])
+				|| 
+			(n[j].date[2] == n[j + 1].date[2] &&
+				n[j].date[1] > n[j + 1].date[1])
+				||
+				(n[j].date[2] == n[j + 1].date[2] &&
+					n[j].date[1] == n[j + 1].date[1] &&
+				    n[j].date[0] > n[j + 1].date[0]))
+			{
+
 				tmp = n[j];
 				n[j] = n[j + 1];
 				n[j + 1] = tmp;
 			}
 }
+
+
 
 void SaveToFile(Note* n, const int N, const char* filename)
 {
@@ -189,11 +206,11 @@ int PrintNote(Note* n, const int N, const string phone)
 	}
 
 	if (stan == 1) {
-		cout << "=============================================================================="
+		cout << "======================================================================="
 			<< endl;
-		cout << "|  №  |   Імя     |   Прізвище   | Номер телефону |  День |  Місяць |   Рік   |"
+		cout << "|  №  |   Імя     |   Прізвище   | Номер телефону |  Дата народження  |"
 			<< endl;
-		cout << "=============================================================================="
+		cout << "======================================================================="
 			<< endl;
 
 		for (int i = 0; i < N; i++)
@@ -203,14 +220,26 @@ int PrintNote(Note* n, const int N, const string phone)
 					<< " | " << setw(9) << left << n[i].firstName
 					<< " | " << setw(12) << left << n[i].lastName
 					<< " | " << setw(14) << left << n[i].phone
-					<< " | " << setw(5) << left << n[i].date.day
-					<< " | " << setw(7) << left << n[i].date.month
-					<< " | " << setw(7) << right << setprecision(2) << n[i].date.year << " |";
+					<< " | " << setw(5) << right << n[i].date[0]<< ":" << n[i].date[1]<<":"<< n[i].date[2] <<setw(6) << " |";
 				cout << endl;
-				cout << "------------------------------------------------------------------------------";
+	            cout << "-------------------------------------------------------------------------";
 				cout << endl;
 			}
 		}
 	}
 	return stan;
+}
+
+bool DateValidate(int day, int  month, int year)
+{ 
+	if (day >= 1 && day <= 31 
+		&& month >= 1 && month <= 12
+			&& year >= 1900 && year <= 2022){
+		return true;
+	}
+	else {
+		cout << "Дата народження не валідна!!!!!" <<endl;
+		return false;
+
+	}
 }
